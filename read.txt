@@ -1,0 +1,37 @@
+1.数据库中客户端信息的配置oauth_client_details
+
+client_3	order,user,client_3	asdf1234	read,write	client_credentials,refresh_token		ROLE_USER,ROLE_ADMIN
+resource1	resource1,client_3	secret	read,write,trust	client_credentials,refresh_token		ROLE_USER,ROLE_ADMIN
+
+2.每次修改客户端配置都需要重新生新token，虽然token值可能不会改变，
+但不重新生成，则可能无法访问成功。
+
+3. oauth-client 是业务云系统，做的客户端（APP）的服务端，提供redirect_uri地址
+
+4.WebSecurityConfigurerAdapter和ResourceServerConfigurerAdapter区别
+
+WebSecurityConfigurerAdapter是默认情况下spring security的http配置
+ResourceServerConfigurerAdapter是默认情况下spring security oauth2的http配置
+参考资料：https://www.jianshu.com/p/1a0a5c92185e
+
+5. users 的权限要设置的跟 client相同
+ InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+ manager.createUser(User.withUsername("user_1").password("123456").authorities("ROLE_USER").build());
+ manager.createUser(User.withUsername("user_2").password("123456").authorities("ROLE_USER").build());
+
+6./oauth/token 的基础认证为 client 信息认证
+  /oauth/authorize 的基础认证信息为user 的认证信息
+
+7.认证方式
+  客户端模式：client_credentials
+  http://localhost:9090/oauth/token?grant_type=client_credentials&scope=read&client_id=resource1&client_secret=secret
+  密码模式：password
+  http://localhost:9090/oauth/token?username=user_1&password=123456&grant_type=password&scope=read&client_id=client_2&client_secret=123456
+  或者  HttpHander: Authorization=Basic Y2xpZW50XzI6MTIzNDU2
+  http://localhost:9090/oauth/token?username=user_1&password=123456&grant_type=password&scope=read
+   授权码模式：authorization_code
+    (1)http://localhost:9090/oauth/authorize?client_id=client_4&response_type=code&redirect_uri=http://localhost:8080/code/callback
+    (2)http://localhost:9090/oauth/token?grant_type=authorization_code&code=z4ItMh&redirect_uri=http://localhost:8080/code/callback
+  简化模式：implicit
+  http://localhost:9090/oauth/authorize?client_id=client_2&response_type=token&redirect_uri=http://localhost:8080/token/callback
+  简化模式返回结果：http://localhost:8080/token/callback#access_token=f4af5665-fc94-4873-8404-5be90d87b039&token_type=bearer&expires_in=85824&scope=trust%20read
