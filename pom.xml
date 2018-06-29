@@ -12,6 +12,7 @@
         <module>resource1-server</module>
         <module>resource2-server</module>
         <module>oauth-client</module>
+        <module>oauth-jwt-server</module>
     </modules>
     <packaging>pom</packaging>
 
