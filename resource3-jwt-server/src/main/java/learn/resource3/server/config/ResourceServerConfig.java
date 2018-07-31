@@ -48,7 +48,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired(required = false)
     private RemoteTokenServices remoteTokenServices;
 
-    private static final String PUBLIC_KEY = "publickey.pem";
+    private static final String PUBLIC_KEY = "publickey123.pem";
 
     @Autowired
     private ResourceServerProperties resourceServerProperties;

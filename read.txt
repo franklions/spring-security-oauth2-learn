@@ -35,3 +35,7 @@ ResourceServerConfigurerAdapter是默认情况下spring security oauth2的http�
   简化模式：implicit
   http://localhost:9090/oauth/authorize?client_id=client_2&response_type=token&redirect_uri=http://localhost:8080/token/callback
   简化模式返回结果：http://localhost:8080/token/callback#access_token=f4af5665-fc94-4873-8404-5be90d87b039&token_type=bearer&expires_in=85824&scope=trust%20read
+
+    JWT认证
+    http://localhost:9091/oauth/token?username=rod&password=koala&grant_type=password&scope=read&client_id=client_2&client_secret=123456
+
